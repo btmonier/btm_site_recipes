@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240" height="44" viewBox="0 0 240 44" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pink rounded rectangle background for avatar -->
+  <rect x="0" y="0" width="44" height="44" rx="8" ry="8" fill="#ffe5e5"/>
+  
+  <!-- Avatar icon (horizontal bars pattern) scaled and positioned -->
+  <g transform="translate(6, 6) scale(0.48)" fill="#5c1f1f">
+    <path d="m 13.43,5.57 v 0.236 7.386 0.236 h 7.857 7.857 7.857 7.857 7.857 7.858 V 13.192 5.806 5.57 H 52.716 44.859 37.002 29.145 21.287 Z" />
+    <path d="m 5.573,21.285 v 0.236 7.386 0.236 h 7.857 7.857 v -0.236 -7.386 -0.236 h -7.857 z" />
+    <path d="m 29.145,21.285 v 0.236 7.386 0.236 h 7.857 7.857 7.857 7.858 v -0.236 -7.386 -0.236 H 52.716 44.859 37.002 Z" />
+    <path d="m 5.573,37 v 0.236 7.386 0.236 h 7.857 7.857 7.858 7.857 v -0.236 -7.386 -0.236 H 29.145 21.287 13.43 Z" />
+    <path d="m 44.859,37 v 0.236 7.386 0.236 h 7.857 7.858 v -0.236 -7.386 -0.236 H 52.716 Z" />
+    <path d="m 5.573,52.715 v 0.236 7.386 0.235 h 7.857 7.857 7.858 7.857 7.857 7.857 v -0.235 -7.386 -0.236 H 44.859 37.002 29.145 21.287 13.43 Z" />
+  </g>
+  
+  <!-- Text: Brandon Monier -->
+  <text x="56" y="28" 
+        font-family="Calistoga, Georgia, serif" 
+        font-size="18" 
+        font-weight="400"
+        fill="#191c1c">Brandon Monier</text>
+</svg>
