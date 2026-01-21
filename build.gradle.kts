@@ -25,6 +25,7 @@ kotlin {
                 cssSupport {
                     enabled.set(true)
                 }
+                devServer = devServer?.copy(open = true) ?: org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer(open = true)
             }
             binaries.executable()
         }
@@ -66,6 +67,11 @@ tasks.register<JavaExec>("convertRecipesToJson") {
     description = "Convert markdown recipe files to JSON"
     classpath = sourceSets["jvmMain"].runtimeClasspath
     mainClass.set("org.btmonier.recipes.RecipeToJsonConverterKt")
+    
+    // Use the same Java toolchain as compilation (Java 21)
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    })
     
     // Default arguments - can be overridden with -PinputDir and -PoutputFile
     val inputDir = project.findProperty("inputDir") as String? ?: "recipes_md"
