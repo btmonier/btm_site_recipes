@@ -6,6 +6,10 @@
     --md-sys-color-primary-container: #ffe5e5;
     --md-sys-color-on-primary-container: #5c1f1f;
     
+    /* Link colors (higher contrast) */
+    --md-sys-color-link: #c43c3c;
+    --md-sys-color-link-hover: #8b2020;
+    
     /* M3 Secondary */
     --md-sys-color-secondary: #d67070;
     --md-sys-color-on-secondary: #FFFFFF;
@@ -100,13 +104,13 @@ body {
 }
 
 a {
-    color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-link);
     text-decoration: none;
     transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 a:hover {
-    color: var(--md-sys-color-on-primary-container);
+    color: var(--md-sys-color-link-hover);
 }
 
 /* ===== App Layout ===== */
@@ -529,7 +533,7 @@ a:hover {
     gap: 8px;
     padding: 8px 16px;
     border-radius: var(--md-sys-shape-corner-full);
-    color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-link);
     font: var(--md-sys-typescale-label-large);
     text-decoration: none;
     transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
@@ -540,7 +544,7 @@ a:hover {
 
 .recipe-back-button:hover {
     background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
+    color: var(--md-sys-color-link-hover);
     text-decoration: none;
 }
 

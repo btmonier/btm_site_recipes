@@ -15,12 +15,12 @@ cook_time: "12 min"
 ## Ingredients
 
 - 1 cup **butter**, *softened*  
-- 1 cup white sugar  
-- 1 cup brown sugar  
+- 1 cup white sugar
+- 1 cup brown ***sugar***  
 - 2 eggs  
 - 1 tsp vanilla  
 - 3 cups flour  
-- 1 tsp baking soda  
+- 1 tsp baking [soda](https://btmonier.org)  
 - 2 cups chocolate chips  
 
 ## Instructions
@@ -30,7 +30,7 @@ cook_time: "12 min"
 3. Add eggs and vanilla; mix well.  
 4. Stir in dry ingredients.  
 5. Fold in chocolate chips.  
-6. Scoop onto baking sheet and bake 10–12 minutes.
+6. Scoop [onto](https://google.com) baking sheet and bake 10–12 minutes.
 
 ---
 

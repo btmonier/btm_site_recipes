@@ -5,6 +5,7 @@ import kotlinx.html.dom.create
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.btmonier.recipes.model.Recipe
+import org.btmonier.recipes.util.processInlineMarkdown
 import org.w3c.dom.HTMLElement
 
 fun createRecipePage(recipe: Recipe): HTMLElement {
@@ -74,7 +75,7 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                                 }
                                 label {
                                     htmlFor = "ingredient-$index"
-                                    +ingredient
+                                    unsafe { +processInlineMarkdown(ingredient) }
                                 }
                             }
                         }
@@ -93,7 +94,9 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                 div("recipe-instructions") {
                     ol("recipe-instructions-list") {
                         recipe.content.instructions.forEach { instruction ->
-                            li("recipe-instruction-item") { +instruction }
+                            li("recipe-instruction-item") {
+                                span { unsafe { +processInlineMarkdown(instruction) } }
+                            }
                         }
                     }
                 }
@@ -110,7 +113,9 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                 div("recipe-notes") {
                     ul("recipe-notes-list") {
                         recipe.content.notes.forEach { note ->
-                            li("recipe-note-item") { +note }
+                            li("recipe-note-item") {
+                                span { unsafe { +processInlineMarkdown(note) } }
+                            }
                         }
                     }
                 }
