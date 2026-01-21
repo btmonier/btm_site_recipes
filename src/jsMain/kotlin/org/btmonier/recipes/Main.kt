@@ -255,9 +255,13 @@ private fun setupNavigation() {
         })
     }
     
-    // Logo click navigates to recipes
+    // Logo click navigates to front page (no hash)
     document.getElementById("nav-logo")?.addEventListener("click", {
-        navigateToPage("recipes")
+        currentPage = "recipes"
+        window.history.pushState(null, "", window.location.pathname)
+        renderPage()
+        updateActiveNavItems()
+        window.scrollTo(0.0, 0.0)
     })
 }
 
