@@ -410,6 +410,7 @@ a:hover {
 
 .all-recipes-title {
     font: var(--md-sys-typescale-headline-large);
+    font-family: 'Calistoga', serif;
     color: var(--md-sys-color-on-surface);
     margin-bottom: 8px;
 }
