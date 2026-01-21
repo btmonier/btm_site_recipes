@@ -12,7 +12,7 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
     val container = document.create.div("recipe-container") {
         // Go Back to Search Button
         div("recipe-back-button-container") {
-            a(href = "#recipes", classes = "md-button md-button-text recipe-back-button") {
+            a(href = "/", classes = "md-button md-button-text recipe-back-button") {
                 span("material-icons") { +"arrow_back" }
                 +"Go Back to Search"
             }
@@ -127,7 +127,7 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
     val backButton = container.querySelector(".recipe-back-button") as? HTMLElement
     backButton?.addEventListener("click", { e ->
         e.preventDefault()
-        window.location.hash = "#recipes"
+        window.location.href = "/"
     })
     
     return container
