@@ -25,12 +25,13 @@ cook_time: "12 min"
 
 ## Instructions
 
-1. Preheat oven to 350°F (175°C).  
+1. Preheat oven to 350{{unit:degF}} (175{{unit:degC}}).
+2. Example{{unit:deg}}
 2. Cream together butter and sugars.  
 3. Add eggs and vanilla; mix well.  
 4. Stir in dry ingredients.  
 5. Fold in chocolate chips.  
-6. Scoop [onto](https://google.com) baking sheet and bake 10–12 minutes.
+6. Scoop [onto](https://google.com) baking sheet and bake 10-12 minutes.
 
 ---
 

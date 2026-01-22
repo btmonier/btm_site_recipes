@@ -80,6 +80,37 @@ class RecipeParser {
         metadata.servings?.let { result = result.replace("{{ servings }}", it.toString()) }
         metadata.prepTime?.let { result = result.replace("{{ prep_time }}", it) }
         metadata.cookTime?.let { result = result.replace("{{ cook_time }}", it) }
+        
+        // Substitute unit macros for temperature symbols
+        result = substituteUnitMacros(result)
+        
+        return result
+    }
+    
+    private fun substituteUnitMacros(content: String): String {
+        val unitMacros = mapOf(
+            // Temperature
+            "{{unit:deg}}" to "°",
+            "{{unit:degC}}" to "°C",
+            "{{unit:degF}}" to "°F",
+            // Math symbols
+            "{{unit:plusminus}}" to "±",
+            "{{unit:times}}" to "×",
+            "{{unit:divide}}" to "÷",
+            "{{unit:infty}}" to "∞",
+            "{{unit:approx}}" to "≈",
+            "{{unit:le}}" to "≤",
+            "{{unit:ge}}" to "≥",
+            // Greek letters
+            "{{unit:pi}}" to "π",
+            "{{unit:tau}}" to "τ",
+            "{{unit:mu}}" to "μ"
+        )
+        
+        var result = content
+        for ((macro, replacement) in unitMacros) {
+            result = result.replace(macro, replacement)
+        }
         return result
     }
     
