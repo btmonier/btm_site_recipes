@@ -258,13 +258,12 @@ a:hover {
 .main-content {
     margin-top: var(--top-nav-height);
     flex: 1;
-    min-height: calc(100vh - var(--top-nav-height));
 }
 
 .page-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 24px 24px;
 }
 
 /* ===== Loading & Error States ===== */
@@ -302,7 +301,7 @@ a:hover {
 }
 
 .recipe-list-header {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     text-align: center;
 }
 
@@ -325,7 +324,7 @@ a:hover {
 }
 
 .recipe-search-container {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: center;
 }
@@ -763,6 +762,46 @@ a:hover {
     flex-shrink: 0;
 }
 
+/* ===== Footer ===== */
+.site-footer {
+    background-color: var(--md-sys-color-surface-container);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    padding: 10px 24px;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-copyright {
+    color: var(--md-sys-color-on-surface-variant);
+    font: var(--md-sys-typescale-body-small);
+}
+
+.footer-github {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 20px;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
+    border-radius: var(--md-sys-shape-corner-small);
+}
+
+.footer-github:hover {
+    background-color: var(--md-sys-color-primary-container);
+}
+
 /* ===== Responsive Design ===== */
 @media (min-width: 1248px) {
     .nav-bar {
@@ -773,7 +812,7 @@ a:hover {
 
 @media (max-width: 768px) {
     .page-container {
-        padding: 24px 16px;
+        padding: 20px 16px;
     }
     
     .recipe-grid {
@@ -829,5 +868,15 @@ a:hover {
     .recipe-search-input {
         height: 48px;
         font-size: 16px;
+    }
+    
+    .site-footer {
+        padding: 10px 16px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
     }
 }

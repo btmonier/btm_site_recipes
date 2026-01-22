@@ -177,6 +177,9 @@ private fun renderApp() {
     }
     mainContent.appendChild(pageContainer)
     
+    // Create Footer
+    appLayout.appendChild(createFooter())
+    
     // Render current page
     renderPage()
     
@@ -210,6 +213,25 @@ private fun createNavBar(): HTMLElement {
                 if (currentPage == "all-recipes") classes = classes + " active"
                 span("material-icons") { +"menu_book" }
                 span("nav-bar-item-label") { +"All Recipes" }
+            }
+        }
+    }
+}
+
+private fun createFooter(): HTMLElement {
+    return document.create.footer("site-footer") {
+        id = "site-footer"
+        
+        div("footer-content") {
+            // Left side - copyright
+            span("footer-copyright") {
+                +"Copyright © Brandon Monier 2026"
+            }
+            
+            // Right side - GitHub link
+            a(href = "https://github.com/btmonier/btm_site_recipes", target = "_blank", classes = "footer-github") {
+                title = "View source on GitHub"
+                i("fa-brands fa-github") {}
             }
         }
     }
