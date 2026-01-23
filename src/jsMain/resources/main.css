@@ -798,6 +798,18 @@ a:hover {
     font: var(--md-sys-typescale-body-small);
 }
 
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-version {
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
 .footer-github {
     display: flex;
     align-items: center;

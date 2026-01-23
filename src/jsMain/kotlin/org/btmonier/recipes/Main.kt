@@ -218,6 +218,8 @@ private fun createNavBar(): HTMLElement {
     }
 }
 
+private const val APP_VERSION = "0.1.2"
+
 private fun createFooter(): HTMLElement {
     return document.create.footer("site-footer") {
         id = "site-footer"
@@ -228,10 +230,15 @@ private fun createFooter(): HTMLElement {
                 +"Copyright © Brandon Monier 2026"
             }
             
-            // Right side - GitHub link
-            a(href = "https://github.com/btmonier/btm_site_recipes", target = "_blank", classes = "footer-github") {
-                title = "View source on GitHub"
-                i("fa-brands fa-github") {}
+            // Right side - version and GitHub link
+            div("footer-right") {
+                span("footer-version") {
+                    +"v$APP_VERSION"
+                }
+                a(href = "https://github.com/btmonier/btm_site_recipes", target = "_blank", classes = "footer-github") {
+                    title = "View source on GitHub"
+                    i("fa-brands fa-github") {}
+                }
             }
         }
     }
