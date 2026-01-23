@@ -873,10 +873,4 @@ a:hover {
     .site-footer {
         padding: 10px 16px;
     }
-    
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 8px;
-    }
 }
