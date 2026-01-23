@@ -637,6 +637,19 @@ a:hover {
     color: var(--md-sys-color-primary);
 }
 
+.recipe-subsection-title {
+    font: var(--md-sys-typescale-title-small);
+    color: var(--md-sys-color-on-surface-variant);
+    margin-top: 20px;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--md-sys-color-primary);
+    padding-left: 12px;
+}
+
+.recipe-subsection-title:first-child {
+    margin-top: 0;
+}
+
 .recipe-ingredients {
     padding: 20px;
     background-color: var(--md-sys-color-surface-container-low);

@@ -1,6 +1,7 @@
 package org.btmonier.recipes.builder
 
 import org.btmonier.recipes.jvmmodel.Recipe
+import org.btmonier.recipes.jvmmodel.RecipeSubsection
 
 class RecipeHtmlBuilder {
     fun buildHtml(recipe: Recipe): String {
@@ -96,7 +97,7 @@ class RecipeHtmlBuilder {
         return html.toString()
     }
     
-    private fun buildIngredients(ingredients: List<String>): String {
+    private fun buildIngredients(ingredients: List<RecipeSubsection>): String {
         val html = StringBuilder()
         html.append("  <div class=\"recipe-section\">\n")
         html.append("    <h2 class=\"recipe-section-title\">\n")
@@ -104,19 +105,25 @@ class RecipeHtmlBuilder {
         html.append("      Ingredients\n")
         html.append("    </h2>\n")
         html.append("    <div class=\"recipe-ingredients\">\n")
-        html.append("      <ul class=\"recipe-ingredients-list\">\n")
         
-        ingredients.forEach { ingredient ->
-            html.append("        <li class=\"recipe-ingredient-item\">${processInlineMarkdown(ingredient)}</li>\n")
+        ingredients.forEach { subsection ->
+            // Render subsection title if present
+            subsection.title?.let { title ->
+                html.append("      <h3 class=\"recipe-subsection-title\">${escapeHtml(title)}</h3>\n")
+            }
+            html.append("      <ul class=\"recipe-ingredients-list\">\n")
+            subsection.items.forEach { ingredient ->
+                html.append("        <li class=\"recipe-ingredient-item\">${processInlineMarkdown(ingredient)}</li>\n")
+            }
+            html.append("      </ul>\n")
         }
         
-        html.append("      </ul>\n")
         html.append("    </div>\n")
         html.append("  </div>\n")
         return html.toString()
     }
     
-    private fun buildInstructions(instructions: List<String>): String {
+    private fun buildInstructions(instructions: List<RecipeSubsection>): String {
         val html = StringBuilder()
         html.append("  <div class=\"recipe-section\">\n")
         html.append("    <h2 class=\"recipe-section-title\">\n")
@@ -124,19 +131,25 @@ class RecipeHtmlBuilder {
         html.append("      Instructions\n")
         html.append("    </h2>\n")
         html.append("    <div class=\"recipe-instructions\">\n")
-        html.append("      <ol class=\"recipe-instructions-list\">\n")
         
-        instructions.forEach { instruction ->
-            html.append("        <li class=\"recipe-instruction-item\">${processInlineMarkdown(instruction)}</li>\n")
+        instructions.forEach { subsection ->
+            // Render subsection title if present
+            subsection.title?.let { title ->
+                html.append("      <h3 class=\"recipe-subsection-title\">${escapeHtml(title)}</h3>\n")
+            }
+            html.append("      <ol class=\"recipe-instructions-list\">\n")
+            subsection.items.forEach { instruction ->
+                html.append("        <li class=\"recipe-instruction-item\">${processInlineMarkdown(instruction)}</li>\n")
+            }
+            html.append("      </ol>\n")
         }
         
-        html.append("      </ol>\n")
         html.append("    </div>\n")
         html.append("  </div>\n")
         return html.toString()
     }
     
-    private fun buildNotes(notes: List<String>): String {
+    private fun buildNotes(notes: List<RecipeSubsection>): String {
         val html = StringBuilder()
         html.append("  <div class=\"recipe-section\">\n")
         html.append("    <h2 class=\"recipe-section-title\">\n")
@@ -144,13 +157,19 @@ class RecipeHtmlBuilder {
         html.append("      Notes\n")
         html.append("    </h2>\n")
         html.append("    <div class=\"recipe-notes\">\n")
-        html.append("      <ul class=\"recipe-notes-list\">\n")
         
-        notes.forEach { note ->
-            html.append("        <li class=\"recipe-note-item\">${processInlineMarkdown(note)}</li>\n")
+        notes.forEach { subsection ->
+            // Render subsection title if present
+            subsection.title?.let { title ->
+                html.append("      <h3 class=\"recipe-subsection-title\">${escapeHtml(title)}</h3>\n")
+            }
+            html.append("      <ul class=\"recipe-notes-list\">\n")
+            subsection.items.forEach { note ->
+                html.append("        <li class=\"recipe-note-item\">${processInlineMarkdown(note)}</li>\n")
+            }
+            html.append("      </ul>\n")
         }
         
-        html.append("      </ul>\n")
         html.append("    </div>\n")
         html.append("  </div>\n")
         return html.toString()

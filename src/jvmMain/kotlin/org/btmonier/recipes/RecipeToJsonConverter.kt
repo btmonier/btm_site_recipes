@@ -11,9 +11,11 @@ import java.nio.file.Paths
 import org.btmonier.recipes.model.Recipe as CommonRecipe
 import org.btmonier.recipes.model.RecipeContent as CommonRecipeContent
 import org.btmonier.recipes.model.RecipeMetadata as CommonRecipeMetadata
+import org.btmonier.recipes.model.RecipeSubsection as CommonRecipeSubsection
 
 // Import jvmMain models (from jvmmodel package)
 import org.btmonier.recipes.jvmmodel.Recipe as JvmRecipe
+import org.btmonier.recipes.jvmmodel.RecipeSubsection as JvmRecipeSubsection
 
 /**
  * Utility class to convert markdown recipe files to JSON format.
@@ -67,6 +69,16 @@ object RecipeToJsonConverter {
     }
     
     /**
+     * Converts a jvmMain RecipeSubsection to a commonMain RecipeSubsection
+     */
+    private fun convertToCommonSubsection(subsection: JvmRecipeSubsection): CommonRecipeSubsection {
+        return CommonRecipeSubsection(
+            title = subsection.title,
+            items = subsection.items
+        )
+    }
+    
+    /**
      * Converts a jvmMain Recipe to a commonMain Recipe (for serialization)
      */
     private fun convertToCommonRecipe(recipe: JvmRecipe): CommonRecipe {
@@ -81,9 +93,9 @@ object RecipeToJsonConverter {
         )
         
         val commonContent = CommonRecipeContent(
-            ingredients = recipe.content.ingredients,
-            instructions = recipe.content.instructions,
-            notes = recipe.content.notes
+            ingredients = recipe.content.ingredients.map { convertToCommonSubsection(it) },
+            instructions = recipe.content.instructions.map { convertToCommonSubsection(it) },
+            notes = recipe.content.notes.map { convertToCommonSubsection(it) }
         )
         
         return CommonRecipe(commonMetadata, commonContent)

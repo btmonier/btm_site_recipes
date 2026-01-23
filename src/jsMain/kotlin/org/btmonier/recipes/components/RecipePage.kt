@@ -67,15 +67,23 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                     +"Ingredients"
                 }
                 div("recipe-ingredients") {
-                    ul("recipe-ingredients-list") {
-                        recipe.content.ingredients.forEachIndexed { index, ingredient ->
-                            li("recipe-ingredient-item") {
-                                input(type = InputType.checkBox, classes = "recipe-ingredient-checkbox") {
-                                    id = "ingredient-$index"
-                                }
-                                label {
-                                    htmlFor = "ingredient-$index"
-                                    unsafe { +processInlineMarkdown(ingredient) }
+                    var ingredientIndex = 0
+                    recipe.content.ingredients.forEach { subsection ->
+                        // Render subsection title if present
+                        subsection.title?.let { title ->
+                            h3("recipe-subsection-title") { +title }
+                        }
+                        ul("recipe-ingredients-list") {
+                            subsection.items.forEach { ingredient ->
+                                val currentIndex = ingredientIndex++
+                                li("recipe-ingredient-item") {
+                                    input(type = InputType.checkBox, classes = "recipe-ingredient-checkbox") {
+                                        id = "ingredient-$currentIndex"
+                                    }
+                                    label {
+                                        htmlFor = "ingredient-$currentIndex"
+                                        unsafe { +processInlineMarkdown(ingredient) }
+                                    }
                                 }
                             }
                         }
@@ -92,10 +100,16 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                     +"Instructions"
                 }
                 div("recipe-instructions") {
-                    ol("recipe-instructions-list") {
-                        recipe.content.instructions.forEach { instruction ->
-                            li("recipe-instruction-item") {
-                                span { unsafe { +processInlineMarkdown(instruction) } }
+                    recipe.content.instructions.forEach { subsection ->
+                        // Render subsection title if present
+                        subsection.title?.let { title ->
+                            h3("recipe-subsection-title") { +title }
+                        }
+                        ol("recipe-instructions-list") {
+                            subsection.items.forEach { instruction ->
+                                li("recipe-instruction-item") {
+                                    span { unsafe { +processInlineMarkdown(instruction) } }
+                                }
                             }
                         }
                     }
@@ -111,10 +125,16 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                     +"Notes"
                 }
                 div("recipe-notes") {
-                    ul("recipe-notes-list") {
-                        recipe.content.notes.forEach { note ->
-                            li("recipe-note-item") {
-                                span { unsafe { +processInlineMarkdown(note) } }
+                    recipe.content.notes.forEach { subsection ->
+                        // Render subsection title if present
+                        subsection.title?.let { title ->
+                            h3("recipe-subsection-title") { +title }
+                        }
+                        ul("recipe-notes-list") {
+                            subsection.items.forEach { note ->
+                                li("recipe-note-item") {
+                                    span { unsafe { +processInlineMarkdown(note) } }
+                                }
                             }
                         }
                     }

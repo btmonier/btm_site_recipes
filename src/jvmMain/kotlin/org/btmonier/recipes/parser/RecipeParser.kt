@@ -5,6 +5,7 @@ import kotlinx.serialization.decodeFromString
 import org.btmonier.recipes.jvmmodel.Recipe
 import org.btmonier.recipes.jvmmodel.RecipeContent
 import org.btmonier.recipes.jvmmodel.RecipeMetadata
+import org.btmonier.recipes.jvmmodel.RecipeSubsection
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -153,14 +154,64 @@ class RecipeParser {
         return ""
     }
     
-    private fun extractIngredients(sections: Map<String, String>): List<String> {
+    private fun extractIngredients(sections: Map<String, String>): List<RecipeSubsection> {
         val ingredientsSection = sections["Ingredients"] ?: return emptyList()
-        return extractMultiLineListItems(ingredientsSection, supportNumbered = false)
+        return extractSubsections(ingredientsSection, supportNumbered = false)
     }
     
-    private fun extractInstructions(sections: Map<String, String>): List<String> {
+    private fun extractInstructions(sections: Map<String, String>): List<RecipeSubsection> {
         val instructionsSection = sections["Instructions"] ?: return emptyList()
-        return extractMultiLineListItems(instructionsSection, supportNumbered = true)
+        return extractSubsections(instructionsSection, supportNumbered = true)
+    }
+    
+    /**
+     * Extracts subsections (### headers) within a section.
+     * If no subsections are found, returns a single subsection with null title.
+     */
+    private fun extractSubsections(section: String, supportNumbered: Boolean): List<RecipeSubsection> {
+        val subsectionRegex = Regex("^###\\s+(.+)$", RegexOption.MULTILINE)
+        val matches = subsectionRegex.findAll(section).toList()
+        
+        if (matches.isEmpty()) {
+            // No subsections, return single subsection with null title
+            val items = extractMultiLineListItems(section, supportNumbered)
+            return if (items.isNotEmpty()) {
+                listOf(RecipeSubsection(title = null, items = items))
+            } else {
+                emptyList()
+            }
+        }
+        
+        val subsections = mutableListOf<RecipeSubsection>()
+        
+        // Check if there's content before the first subsection header
+        val contentBeforeFirst = section.substring(0, matches.first().range.first).trim()
+        if (contentBeforeFirst.isNotEmpty()) {
+            val items = extractMultiLineListItems(contentBeforeFirst, supportNumbered)
+            if (items.isNotEmpty()) {
+                subsections.add(RecipeSubsection(title = null, items = items))
+            }
+        }
+        
+        // Process each subsection
+        matches.forEachIndexed { index, match ->
+            val title = match.groupValues[1].trim()
+            val startIndex = match.range.last + 1
+            val endIndex = if (index + 1 < matches.size) {
+                matches[index + 1].range.first
+            } else {
+                section.length
+            }
+            
+            val subsectionContent = section.substring(startIndex, endIndex).trim()
+            val items = extractMultiLineListItems(subsectionContent, supportNumbered)
+            
+            if (items.isNotEmpty()) {
+                subsections.add(RecipeSubsection(title = title, items = items))
+            }
+        }
+        
+        return subsections
     }
     
     /**
@@ -176,6 +227,11 @@ class RecipeParser {
         
         for (line in section.lines()) {
             val trimmedLine = line.trim()
+            
+            // Skip subsection headers (### lines) - they're handled by extractSubsections
+            if (trimmedLine.startsWith("###")) {
+                continue
+            }
             
             // Check if this line starts a new list item
             val isNewNumberedItem = supportNumbered && trimmedLine.matches(numberedPattern)
@@ -208,9 +264,9 @@ class RecipeParser {
         return items.filter { it.isNotEmpty() }
     }
     
-    private fun extractNotes(sections: Map<String, String>): List<String> {
+    private fun extractNotes(sections: Map<String, String>): List<RecipeSubsection> {
         val notesSection = sections["Notes"] ?: return emptyList()
-        return extractMultiLineListItems(notesSection, supportNumbered = false)
+        return extractSubsections(notesSection, supportNumbered = false)
     }
 }
 
