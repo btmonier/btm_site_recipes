@@ -218,22 +218,23 @@ private fun createNavBar(): HTMLElement {
     }
 }
 
-private const val APP_VERSION = "0.1.2"
-
 private fun createFooter(): HTMLElement {
     return document.create.footer("site-footer") {
         id = "site-footer"
         
         div("footer-content") {
-            // Left side - copyright
-            span("footer-copyright") {
-                +"Copyright © Brandon Monier 2026"
+            // Left side - avatar and copyright
+            div("footer-left") {
+                img(src = "images/avatar.svg", alt = "Brandon Monier", classes = "footer-avatar") {}
+                span("footer-copyright") {
+                    +"© ${kotlin.js.Date().getFullYear()} Brandon Monier"
+                }
             }
             
             // Right side - version and GitHub link
             div("footer-right") {
                 span("footer-version") {
-                    +"v$APP_VERSION"
+                    +"v${BuildConfig.VERSION}"
                 }
                 a(href = "https://github.com/btmonier/btm_site_recipes", target = "_blank", classes = "footer-github") {
                     title = "View source on GitHub"
