@@ -1,5 +1,6 @@
 package org.btmonier.recipes.builder
 
+import org.btmonier.recipes.jvmmodel.ListItem
 import org.btmonier.recipes.jvmmodel.Recipe
 import org.btmonier.recipes.jvmmodel.RecipeSubsection
 
@@ -173,15 +174,43 @@ class RecipeHtmlBuilder {
             subsection.title?.let { title ->
                 html.append("      <h3 class=\"recipe-subsection-title\">${escapeHtml(title)}</h3>\n")
             }
-            html.append("      <ul class=\"recipe-notes-list\">\n")
-            subsection.items.forEach { note ->
-                html.append("        <li class=\"recipe-note-item\">${processInlineMarkdown(note)}</li>\n")
+            
+            // Use nested items if available, otherwise fall back to flat items
+            if (subsection.nestedItems.isNotEmpty()) {
+                html.append(buildNestedList(subsection.nestedItems, indent = 6))
+            } else if (subsection.items.isNotEmpty()) {
+                html.append("      <ul class=\"recipe-notes-list\">\n")
+                subsection.items.forEach { note ->
+                    html.append("        <li class=\"recipe-note-item\">${processInlineMarkdown(note)}</li>\n")
+                }
+                html.append("      </ul>\n")
             }
-            html.append("      </ul>\n")
         }
         
         html.append("    </div>\n")
         html.append("  </div>\n")
+        return html.toString()
+    }
+    
+    /**
+     * Recursively builds nested unordered lists.
+     */
+    private fun buildNestedList(items: List<ListItem>, indent: Int): String {
+        val html = StringBuilder()
+        val spaces = " ".repeat(indent)
+        
+        html.append("$spaces<ul class=\"recipe-notes-list\">\n")
+        items.forEach { item ->
+            html.append("$spaces  <li class=\"recipe-note-item\">${processInlineMarkdown(item.content)}")
+            if (item.children.isNotEmpty()) {
+                html.append("\n")
+                html.append(buildNestedList(item.children, indent + 4))
+                html.append("$spaces  ")
+            }
+            html.append("</li>\n")
+        }
+        html.append("$spaces</ul>\n")
+        
         return html.toString()
     }
     

@@ -12,10 +12,12 @@ import org.btmonier.recipes.model.Recipe as CommonRecipe
 import org.btmonier.recipes.model.RecipeContent as CommonRecipeContent
 import org.btmonier.recipes.model.RecipeMetadata as CommonRecipeMetadata
 import org.btmonier.recipes.model.RecipeSubsection as CommonRecipeSubsection
+import org.btmonier.recipes.model.ListItem as CommonListItem
 
 // Import jvmMain models (from jvmmodel package)
 import org.btmonier.recipes.jvmmodel.Recipe as JvmRecipe
 import org.btmonier.recipes.jvmmodel.RecipeSubsection as JvmRecipeSubsection
+import org.btmonier.recipes.jvmmodel.ListItem as JvmListItem
 
 /**
  * Utility class to convert markdown recipe files to JSON format.
@@ -70,12 +72,23 @@ object RecipeToJsonConverter {
     }
     
     /**
+     * Converts a jvmMain ListItem to a commonMain ListItem (recursively)
+     */
+    private fun convertToCommonListItem(item: JvmListItem): CommonListItem {
+        return CommonListItem(
+            content = item.content,
+            children = item.children.map { convertToCommonListItem(it) }
+        )
+    }
+    
+    /**
      * Converts a jvmMain RecipeSubsection to a commonMain RecipeSubsection
      */
     private fun convertToCommonSubsection(subsection: JvmRecipeSubsection): CommonRecipeSubsection {
         return CommonRecipeSubsection(
             title = subsection.title,
-            items = subsection.items
+            items = subsection.items,
+            nestedItems = subsection.nestedItems.map { convertToCommonListItem(it) }
         )
     }
     

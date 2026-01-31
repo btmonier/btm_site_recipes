@@ -2,6 +2,7 @@ package org.btmonier.recipes.parser
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.decodeFromString
+import org.btmonier.recipes.jvmmodel.ListItem
 import org.btmonier.recipes.jvmmodel.Recipe
 import org.btmonier.recipes.jvmmodel.RecipeContent
 import org.btmonier.recipes.jvmmodel.RecipeMetadata
@@ -267,7 +268,151 @@ class RecipeParser {
     
     private fun extractNotes(sections: Map<String, String>): List<RecipeSubsection> {
         val notesSection = sections["Notes"] ?: return emptyList()
-        return extractSubsections(notesSection, supportNumbered = false)
+        return extractNestedSubsections(notesSection)
+    }
+    
+    /**
+     * Extracts subsections with support for nested lists (for Notes section).
+     */
+    private fun extractNestedSubsections(section: String): List<RecipeSubsection> {
+        val subsectionRegex = Regex("^###\\s+(.+)$", RegexOption.MULTILINE)
+        val matches = subsectionRegex.findAll(section).toList()
+        
+        if (matches.isEmpty()) {
+            // No subsections, return single subsection with null title
+            val items = extractNestedListItems(section)
+            return if (items.isNotEmpty()) {
+                listOf(RecipeSubsection(title = null, nestedItems = items))
+            } else {
+                emptyList()
+            }
+        }
+        
+        val subsections = mutableListOf<RecipeSubsection>()
+        
+        // Check if there's content before the first subsection header
+        val contentBeforeFirst = section.substring(0, matches.first().range.first).trim()
+        if (contentBeforeFirst.isNotEmpty()) {
+            val items = extractNestedListItems(contentBeforeFirst)
+            if (items.isNotEmpty()) {
+                subsections.add(RecipeSubsection(title = null, nestedItems = items))
+            }
+        }
+        
+        // Process each subsection
+        matches.forEachIndexed { index, match ->
+            val title = match.groupValues[1].trim()
+            val startIndex = match.range.last + 1
+            val endIndex = if (index + 1 < matches.size) {
+                matches[index + 1].range.first
+            } else {
+                section.length
+            }
+            
+            val subsectionContent = section.substring(startIndex, endIndex).trim()
+            val items = extractNestedListItems(subsectionContent)
+            
+            if (items.isNotEmpty()) {
+                subsections.add(RecipeSubsection(title = title, nestedItems = items))
+            }
+        }
+        
+        return subsections
+    }
+    
+    /**
+     * Extracts list items with support for recursive nesting.
+     * Nesting is determined by indentation (2+ spaces or tabs before the list marker).
+     */
+    private fun extractNestedListItems(section: String): List<ListItem> {
+        val lines = section.lines()
+        return parseNestedList(lines, 0).first
+    }
+    
+    /**
+     * Recursively parses nested list items from lines.
+     * Returns a pair of (parsed items, number of lines consumed).
+     */
+    private fun parseNestedList(lines: List<String>, startIndex: Int, baseIndent: Int = 0): Pair<List<ListItem>, Int> {
+        val items = mutableListOf<ListItem>()
+        var i = startIndex
+        
+        while (i < lines.size) {
+            val line = lines[i]
+            
+            // Skip subsection headers (### lines)
+            if (line.trim().startsWith("###")) {
+                i++
+                continue
+            }
+            
+            // Skip empty lines
+            if (line.trim().isEmpty()) {
+                i++
+                continue
+            }
+            
+            // Calculate indentation level
+            val indent = line.takeWhile { it == ' ' || it == '\t' }.length
+            val trimmedLine = line.trim()
+            
+            // Check if this is a list item
+            val isListItem = trimmedLine.startsWith("-") || trimmedLine.startsWith("*")
+            
+            if (!isListItem) {
+                // Not a list item, skip
+                i++
+                continue
+            }
+            
+            // Check if this item belongs to the current level
+            if (indent < baseIndent) {
+                // This item belongs to a parent level, stop processing
+                break
+            }
+            
+            if (indent > baseIndent && items.isNotEmpty()) {
+                // This is a nested item, parse it recursively as children of the last item
+                val (children, consumed) = parseNestedList(lines, i, indent)
+                if (children.isNotEmpty() && items.isNotEmpty()) {
+                    // Add children to the last item
+                    val lastItem = items.removeLast()
+                    items.add(lastItem.copy(children = lastItem.children + children))
+                }
+                i += consumed
+                continue
+            }
+            
+            if (indent == baseIndent || (baseIndent == 0 && items.isEmpty())) {
+                // This is an item at the current level
+                val content = trimmedLine.removePrefix("-").removePrefix("*").trim()
+                items.add(ListItem(content = content))
+                i++
+                
+                // Check if next lines are nested children
+                if (i < lines.size) {
+                    val nextLine = lines[i]
+                    val nextIndent = nextLine.takeWhile { it == ' ' || it == '\t' }.length
+                    val nextTrimmed = nextLine.trim()
+                    val nextIsListItem = nextTrimmed.startsWith("-") || nextTrimmed.startsWith("*")
+                    
+                    if (nextIsListItem && nextIndent > indent) {
+                        // Parse nested children
+                        val (children, consumed) = parseNestedList(lines, i, nextIndent)
+                        if (children.isNotEmpty()) {
+                            val lastItem = items.removeLast()
+                            items.add(lastItem.copy(children = children))
+                        }
+                        i += consumed
+                    }
+                }
+            } else {
+                // Different indent level, done with this level
+                break
+            }
+        }
+        
+        return Pair(items, i - startIndex)
     }
 }
 

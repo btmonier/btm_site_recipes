@@ -4,6 +4,7 @@ import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.btmonier.recipes.model.ListItem
 import org.btmonier.recipes.model.Recipe
 import org.btmonier.recipes.util.processInlineMarkdown
 import org.w3c.dom.HTMLElement
@@ -134,10 +135,15 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                         subsection.title?.let { title ->
                             h3("recipe-subsection-title") { +title }
                         }
-                        ul("recipe-notes-list") {
-                            subsection.items.forEach { note ->
-                                li("recipe-note-item") {
-                                    span { unsafe { +processInlineMarkdown(note) } }
+                        // Use nested items if available, otherwise fall back to flat items
+                        if (subsection.nestedItems.isNotEmpty()) {
+                            renderNestedList(this, subsection.nestedItems)
+                        } else if (subsection.items.isNotEmpty()) {
+                            ul("recipe-notes-list") {
+                                subsection.items.forEach { note ->
+                                    li("recipe-note-item") {
+                                        span { unsafe { +processInlineMarkdown(note) } }
+                                    }
                                 }
                             }
                         }
@@ -155,5 +161,21 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
     })
     
     return container
+}
+
+/**
+ * Recursively renders a nested list of items.
+ */
+private fun renderNestedList(container: FlowContent, items: List<ListItem>) {
+    container.ul("recipe-notes-list") {
+        items.forEach { item ->
+            li("recipe-note-item") {
+                unsafe { +processInlineMarkdown(item.content) }
+                if (item.children.isNotEmpty()) {
+                    renderNestedList(this, item.children)
+                }
+            }
+        }
+    }
 }
 

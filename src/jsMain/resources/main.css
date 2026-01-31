@@ -748,31 +748,33 @@ a:hover {
 }
 
 .recipe-notes-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: disc;
+    padding-left: 24px;
+    margin: 0 0 8px 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+}
+
+.recipe-notes-list .recipe-notes-list {
+    list-style: circle;
+    margin-top: 8px;
+    margin-bottom: 0;
+    gap: 6px;
+}
+
+.recipe-notes-list .recipe-notes-list .recipe-notes-list {
+    list-style: square;
 }
 
 .recipe-note-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
     font: var(--md-sys-typescale-body-medium);
     color: var(--md-sys-color-on-surface-variant);
     line-height: 1.6;
-    font-style: italic;
 }
 
-.recipe-note-item::before {
-    content: 'note';
-    font-family: 'Material Icons';
-    font-size: 18px;
+.recipe-note-item::marker {
     color: var(--md-sys-color-tertiary);
-    margin-top: 2px;
-    flex-shrink: 0;
 }
 
 /* ===== Footer ===== */
