@@ -75,6 +75,16 @@ class RecipeHtmlBuilder {
             """.trimIndent())
         }
         
+        recipe.metadata.latentTime?.let {
+            metadataItems.add("""
+            <div class="recipe-metadata-item">
+              <span class="material-icons">hourglass_empty</span>
+              <span class="recipe-metadata-label">Latent time:</span>
+              <span>${escapeHtml(it)}</span>
+            </div>
+            """.trimIndent())
+        }
+        
         if (metadataItems.isNotEmpty()) {
             html.append("    <div class=\"recipe-metadata\">\n")
             metadataItems.forEach { item ->

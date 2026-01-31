@@ -13,6 +13,8 @@ data class RecipeMetadata(
     @SerialName("prep_time")
     val prepTime: String? = null,
     @SerialName("cook_time")
-    val cookTime: String? = null
+    val cookTime: String? = null,
+    @SerialName("latent_time")
+    val latentTime: String? = null
 )
 

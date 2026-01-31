@@ -81,6 +81,7 @@ class RecipeParser {
         metadata.servings?.let { result = result.replace("{{ servings }}", it.toString()) }
         metadata.prepTime?.let { result = result.replace("{{ prep_time }}", it) }
         metadata.cookTime?.let { result = result.replace("{{ cook_time }}", it) }
+        metadata.latentTime?.let { result = result.replace("{{ latent_time }}", it) }
         
         // Substitute unit macros for temperature symbols
         result = substituteUnitMacros(result)

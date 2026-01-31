@@ -59,7 +59,8 @@ object RecipeToJsonConverter {
                 tags = recipe.metadata.tags,
                 servings = recipe.metadata.servings,
                 prepTime = recipe.metadata.prepTime,
-                cookTime = recipe.metadata.cookTime
+                cookTime = recipe.metadata.cookTime,
+                latentTime = recipe.metadata.latentTime
             )
             
             result.add(CommonRecipe(updatedMetadata, recipe.content))
@@ -89,7 +90,8 @@ object RecipeToJsonConverter {
             tags = recipe.metadata.tags,
             servings = recipe.metadata.servings,
             prepTime = recipe.metadata.prepTime,
-            cookTime = recipe.metadata.cookTime
+            cookTime = recipe.metadata.cookTime,
+            latentTime = recipe.metadata.latentTime
         )
         
         val commonContent = CommonRecipeContent(

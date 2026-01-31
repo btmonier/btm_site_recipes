@@ -8,6 +8,7 @@ tags:
 servings: 6
 prep_time: "60 min"
 cook_time: "120 min"
+latent_time: "8 hours"
 ---
 
 ## Ingredients
@@ -28,7 +29,6 @@ cook_time: "120 min"
 - 1/2 tsp cinnamon
 - 1/4 tsp nutmeg
 
----
 
 ## Instructions
 
@@ -40,7 +40,6 @@ cook_time: "120 min"
 6. Bake for 25-30 minutes at 375{{unit:deg}}.
 7. Let cool for 10 minutes before serving.
 
----
 
 ## Notes
 
@@ -58,10 +57,6 @@ cook_time: "120 min"
 - Room temperature: 3-4 days
 - Refrigerated: 1 week
 - Frozen: Up to 3 months
-
----
-
-## Additional Formatting Tests
 
 ### Text Styles
 - **Bold text** for emphasis
@@ -88,4 +83,6 @@ cook_time: "120 min"
 - 1/2 cup
 - 3/4 teaspoon
 - 1 1/2 tablespoons
+
+
 

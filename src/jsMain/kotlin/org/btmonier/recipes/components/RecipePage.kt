@@ -37,6 +37,10 @@ fun createRecipePage(recipe: Recipe): HTMLElement {
                 metadataItems.add(Triple("timer", "Cook time:", it))
             }
             
+            recipe.metadata.latentTime?.let {
+                metadataItems.add(Triple("hourglass_empty", "Latent time:", it))
+            }
+            
             if (metadataItems.isNotEmpty()) {
                 div("recipe-metadata") {
                     metadataItems.forEach { item ->
